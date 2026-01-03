@@ -562,6 +562,9 @@
                     const data = await response.json();
                     showMessage('success', `Image uploaded successfully: ${data.filename}`);
 
+                    // Reload images to update the count and list
+                    await loadImages();
+
                     setTimeout(() => {
                         resetForm();
                     }, 2000);
@@ -750,14 +753,6 @@
 
         // Load images on page load
         loadImages();
-
-        // Reload images after successful upload
-        const originalUploadHandler = uploadBtn.onclick;
-        uploadBtn.onclick = async function(e) {
-            await originalUploadHandler.call(this, e);
-            // Give it a moment for the upload to complete
-            setTimeout(loadImages, 1000);
-        };
     </script>
 </body>
 </html>

@@ -1,8 +1,8 @@
 import { mkdir, stat, unlink } from "fs/promises";
 import { existsSync } from "fs";
-import { join } from "path";
+import { join, resolve } from "path";
 
-const ALBUM_DIR = "./album";
+const ALBUM_DIR = resolve("./album");
 const PORT = process.env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 
