@@ -1,15 +1,46 @@
 services:
   app:
-    image: lbatch-nuc12.local:5000/trmnl-plugin-photo-album:latest
+    image: localhost:5000/trmnl-plugin-photo-album:latest
     # Uncomment to build locally instead of pulling from registry
     # build: .
     init: true
-    ports:
-      - "${PORT:-3000}:${PORT:-3000}"
+    # Remove external port mapping - only expose internally to Caddy
+    expose:
+      - "3000"
     volumes:
       - ./album:/app/album
     environment:
       - NODE_ENV=production
-      - PORT=${PORT:-3000}
-      - BASE_URL=${BASE_URL:-http://localhost:3000}
+      - PORT=3000
+      - BASE_URL=${BASE_URL:-https://${DOMAIN:-localhost}}
     restart: unless-stopped
+    networks:
+      - app-network
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "${HTTP_PORT:-3001}:80"   # HTTP
+      - "${HTTPS_PORT:-3002}:443"  # HTTPS
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./certs:/certs:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+      - HTTP_PORT=${HTTP_PORT:-3001}
+      - HTTPS_PORT=${HTTPS_PORT:-3002}
+    restart: unless-stopped
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:

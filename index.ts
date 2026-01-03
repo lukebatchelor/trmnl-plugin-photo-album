@@ -18,6 +18,44 @@ const server = Bun.serve({
     const url = new URL(req.url);
     const path = url.pathname;
 
+    // Share target endpoint (from PWA Share Target API)
+    if (path === "/share" && req.method === "POST") {
+      try {
+        const formData = await req.formData();
+        const files = formData.getAll("media") as File[];
+
+        if (!files || files.length === 0) {
+          return new Response("No files shared", { status: 400 });
+        }
+
+        // Save all shared files to album directory
+        const uploadedFiles = [];
+        for (const file of files) {
+          if (file && file.size > 0) {
+            // Generate a filename from the original file, keeping extension
+            const timestamp = Date.now();
+            const nameParts = file.name.split('.');
+            const extension = nameParts.length > 1 ? '.' + nameParts.pop()!.toLowerCase() : '.jpg';
+            const baseName = nameParts.join('.').replace(/[^a-zA-Z0-9_-]/g, '') || 'shared';
+            const filename = `${baseName}-${timestamp}${extension}`;
+
+            const filepath = join(ALBUM_DIR, filename);
+            await Bun.write(filepath, file);
+            uploadedFiles.push(filename);
+          }
+        }
+
+        // Redirect to home page with success message
+        return new Response(null, {
+          status: 303,
+          headers: { "Location": "/?shared=success" },
+        });
+      } catch (error) {
+        console.error("Share target upload failed:", error);
+        return new Response("Upload failed", { status: 500 });
+      }
+    }
+
     // Upload image endpoint
     if (path === "/upload" && req.method === "POST") {
       try {

@@ -320,3 +320,27 @@ deleteBtn.addEventListener('click', async () => {
 
 // Load images on page load
 loadImages();
+
+// Handle shared images from PWA Share Target API
+async function handleSharedFiles() {
+    const url = new URL(window.location.href);
+
+    // Check if we have a success parameter from share redirect
+    if (url.searchParams.get('shared') === 'success') {
+        showMessage('success', 'Image shared successfully!');
+
+        // Reload images to show the newly shared image
+        await loadImages();
+
+        // Clean up the URL without reloading the page
+        window.history.replaceState({}, '', '/');
+
+        // Auto-hide the message after 3 seconds
+        setTimeout(() => {
+            message.style.display = 'none';
+        }, 3000);
+    }
+}
+
+// Check for shared files on page load
+handleSharedFiles();

@@ -1,0 +1,55 @@
+{
+    auto_https disable_redirects
+}
+
+http://{$DOMAIN:localhost} {
+    # Serve HTTP directly without redirect
+    reverse_proxy app:3000
+
+    # Enable compression
+    encode gzip
+
+    # Headers for PWA
+    header {
+        # Basic security headers (no HSTS for HTTP)
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+
+        # Allow service worker to control all pages
+        Service-Worker-Allowed "/"
+    }
+
+    # Log to stdout
+    log {
+        output stdout
+        format console
+    }
+}
+
+https://{$DOMAIN:localhost} {
+    # Use mkcert-generated certificates
+    tls /certs/cert.pem /certs/key.pem
+
+    # Reverse proxy to Bun backend
+    reverse_proxy app:3000
+
+    # Enable compression
+    encode gzip
+
+    # Headers for PWA
+    header {
+        # Security headers
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+
+        # Allow service worker to control all pages
+        Service-Worker-Allowed "/"
+    }
+
+    # Log to stdout
+    log {
+        output stdout
+        format console
+    }
+}

@@ -7,5 +7,6 @@ frontend/dist
 .env.*
 !.env.example
 album
+certs
 *.md
 .claude
