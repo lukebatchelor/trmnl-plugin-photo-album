@@ -404,7 +404,7 @@
                     <input type="text" id="filenameInput" placeholder="imagename">
                     <span class="filename-extension" id="filenameExtension">.jpg</span>
                 </div>
-                <div class="filename-error" id="filenameError">Only lowercase letters and numbers allowed</div>
+                <div class="filename-error" id="filenameError">Only letters, numbers, dashes, and underscores allowed</div>
             </div>
 
             <div class="controls">
@@ -494,7 +494,7 @@
         });
 
         function validateFilename(filename) {
-            const valid = /^[a-z0-9]+$/.test(filename);
+            const valid = /^[a-zA-Z0-9_-]+$/.test(filename);
 
             if (filename === '') {
                 filenameWrapper.classList.remove('error');
@@ -523,8 +523,8 @@
             const nameParts = file.name.split('.');
             fileExtension = nameParts.length > 1 ? '.' + nameParts.pop().toLowerCase() : '.jpg';
 
-            // Auto-populate filename (remove extension and make lowercase, remove non-alphanumeric)
-            const baseName = nameParts.join('.').toLowerCase().replace(/[^a-z0-9]/g, '');
+            // Auto-populate filename (remove extension and keep allowed characters)
+            const baseName = nameParts.join('.').replace(/[^a-zA-Z0-9_-]/g, '');
             filenameInput.value = baseName || 'image';
             filenameExtension.textContent = fileExtension;
 
@@ -542,7 +542,8 @@
         uploadBtn.addEventListener('click', async () => {
             if (!originalFile || !validateFilename(filenameInput.value)) return;
 
-            const finalFilename = filenameInput.value + fileExtension;
+            // Lowercase the filename when saving
+            const finalFilename = filenameInput.value.toLowerCase() + fileExtension;
             const renamedFile = new File([originalFile], finalFilename, { type: originalFile.type });
 
             const formData = new FormData();
