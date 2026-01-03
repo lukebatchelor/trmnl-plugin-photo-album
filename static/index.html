@@ -88,14 +88,71 @@
             display: none;
         }
 
-        .preview img {
+        .preview-image {
             max-width: 100%;
             border-radius: 8px;
             margin-bottom: 15px;
         }
 
+        .filename-group {
+            margin-bottom: 15px;
+        }
+
+        .filename-label {
+            display: block;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .filename-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            transition: border-color 0.3s ease;
+        }
+
+        .filename-input-wrapper:focus-within {
+            border-color: #667eea;
+        }
+
+        .filename-input-wrapper.error {
+            border-color: #dc3545;
+        }
+
+        #filenameInput {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            font-family: monospace;
+        }
+
+        .filename-extension {
+            color: #999;
+            font-size: 14px;
+            font-family: monospace;
+        }
+
+        .filename-error {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
         .btn {
-            width: 100%;
+            flex: 1;
             padding: 14px;
             border: none;
             border-radius: 8px;
@@ -103,6 +160,15 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
         }
 
         .btn-upload {
@@ -146,6 +212,174 @@
             font-size: 14px;
             margin-bottom: 10px;
         }
+
+        .divider {
+            margin: 40px 0;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .image-list {
+            margin-top: 30px;
+        }
+
+        .image-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            user-select: none;
+        }
+
+        .image-list-header:hover {
+            background: #f0f2ff;
+        }
+
+        .image-list-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .expand-icon {
+            color: #667eea;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .expand-icon.expanded {
+            transform: rotate(90deg);
+        }
+
+        .image-list-title {
+            color: #333;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .image-count {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .image-list-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .image-list-content.expanded {
+            max-height: 600px;
+            margin-top: 20px;
+        }
+
+        .image-items {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .image-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s ease;
+        }
+
+        .image-item:last-child {
+            border-bottom: none;
+        }
+
+        .image-item:hover {
+            background: #f8f9ff;
+        }
+
+        .image-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .image-thumbnail {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .image-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .image-name {
+            color: #333;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: monospace;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .image-meta {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .no-images {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .delete-controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-danger:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .select-all-controls {
+            padding: 10px 12px;
+            background: #f8f9ff;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .select-all-label {
+            color: #667eea;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -162,12 +396,50 @@
         <input type="file" id="fileInput" accept="image/*">
 
         <div class="preview" id="preview">
-            <img id="previewImage" src="" alt="Preview">
-            <div class="filename" id="filename"></div>
-            <button class="btn btn-upload" id="uploadBtn">Upload Image</button>
+            <img id="previewImage" class="preview-image" src="" alt="Preview">
+
+            <div class="filename-group">
+                <label class="filename-label">Filename</label>
+                <div class="filename-input-wrapper" id="filenameWrapper">
+                    <input type="text" id="filenameInput" placeholder="imagename">
+                    <span class="filename-extension" id="filenameExtension">.jpg</span>
+                </div>
+                <div class="filename-error" id="filenameError">Only lowercase letters and numbers allowed</div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                <button class="btn btn-upload" id="uploadBtn">Upload Image</button>
+            </div>
         </div>
 
         <div class="message" id="message"></div>
+
+        <div class="divider"></div>
+
+        <div class="image-list">
+            <div class="image-list-header" id="imageListToggle">
+                <div class="image-list-header-left">
+                    <span class="expand-icon" id="expandIcon">▶</span>
+                    <h2 class="image-list-title">Manage Images</h2>
+                </div>
+                <span class="image-count" id="imageCount">0 images</span>
+            </div>
+
+            <div class="image-list-content" id="imageListContent">
+                <div class="image-items" id="imageItems">
+                    <div class="select-all-controls">
+                        <input type="checkbox" id="selectAll" class="image-checkbox">
+                        <label for="selectAll" class="select-all-label">Select All</label>
+                    </div>
+                    <div class="no-images" id="noImages">No images uploaded yet</div>
+                </div>
+
+                <div class="delete-controls">
+                    <button class="btn btn-danger" id="deleteBtn" disabled>Delete Selected</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -175,11 +447,16 @@
         const fileInput = document.getElementById('fileInput');
         const preview = document.getElementById('preview');
         const previewImage = document.getElementById('previewImage');
-        const filenameDiv = document.getElementById('filename');
+        const filenameInput = document.getElementById('filenameInput');
+        const filenameExtension = document.getElementById('filenameExtension');
+        const filenameWrapper = document.getElementById('filenameWrapper');
+        const filenameError = document.getElementById('filenameError');
         const uploadBtn = document.getElementById('uploadBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
         const message = document.getElementById('message');
 
-        let selectedFile = null;
+        let originalFile = null;
+        let fileExtension = '';
 
         uploadArea.addEventListener('click', () => fileInput.click());
 
@@ -208,24 +485,68 @@
             }
         });
 
+        filenameInput.addEventListener('input', (e) => {
+            validateFilename(e.target.value);
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            resetForm();
+        });
+
+        function validateFilename(filename) {
+            const valid = /^[a-z0-9]+$/.test(filename);
+
+            if (filename === '') {
+                filenameWrapper.classList.remove('error');
+                filenameError.style.display = 'none';
+                uploadBtn.disabled = true;
+                return false;
+            }
+
+            if (!valid) {
+                filenameWrapper.classList.add('error');
+                filenameError.style.display = 'block';
+                uploadBtn.disabled = true;
+                return false;
+            }
+
+            filenameWrapper.classList.remove('error');
+            filenameError.style.display = 'none';
+            uploadBtn.disabled = false;
+            return true;
+        }
+
         function handleFileSelect(file) {
-            selectedFile = file;
+            originalFile = file;
+
+            // Get file extension
+            const nameParts = file.name.split('.');
+            fileExtension = nameParts.length > 1 ? '.' + nameParts.pop().toLowerCase() : '.jpg';
+
+            // Auto-populate filename (remove extension and make lowercase, remove non-alphanumeric)
+            const baseName = nameParts.join('.').toLowerCase().replace(/[^a-z0-9]/g, '');
+            filenameInput.value = baseName || 'image';
+            filenameExtension.textContent = fileExtension;
 
             const reader = new FileReader();
             reader.onload = (e) => {
                 previewImage.src = e.target.result;
-                filenameDiv.textContent = file.name;
+                uploadArea.style.display = 'none';
                 preview.style.display = 'block';
                 message.style.display = 'none';
+                validateFilename(filenameInput.value);
             };
             reader.readAsDataURL(file);
         }
 
         uploadBtn.addEventListener('click', async () => {
-            if (!selectedFile) return;
+            if (!originalFile || !validateFilename(filenameInput.value)) return;
+
+            const finalFilename = filenameInput.value + fileExtension;
+            const renamedFile = new File([originalFile], finalFilename, { type: originalFile.type });
 
             const formData = new FormData();
-            formData.append('image', selectedFile);
+            formData.append('image', renamedFile);
 
             uploadBtn.disabled = true;
             uploadBtn.textContent = 'Uploading...';
@@ -261,13 +582,181 @@
         }
 
         function resetForm() {
-            selectedFile = null;
+            originalFile = null;
+            fileExtension = '';
             fileInput.value = '';
+            filenameInput.value = '';
+            uploadArea.style.display = 'block';
             preview.style.display = 'none';
             previewImage.src = '';
-            filenameDiv.textContent = '';
             message.style.display = 'none';
+            uploadBtn.disabled = false;
+            uploadBtn.textContent = 'Upload Image';
+            filenameWrapper.classList.remove('error');
+            filenameError.style.display = 'none';
         }
+
+        // Image list management
+        const imageListToggle = document.getElementById('imageListToggle');
+        const imageListContent = document.getElementById('imageListContent');
+        const expandIcon = document.getElementById('expandIcon');
+        const imageItems = document.getElementById('imageItems');
+        const imageCount = document.getElementById('imageCount');
+        const noImages = document.getElementById('noImages');
+        const selectAll = document.getElementById('selectAll');
+        const deleteBtn = document.getElementById('deleteBtn');
+
+        let allImages = [];
+        let isExpanded = false;
+
+        imageListToggle.addEventListener('click', () => {
+            isExpanded = !isExpanded;
+            imageListContent.classList.toggle('expanded', isExpanded);
+            expandIcon.classList.toggle('expanded', isExpanded);
+        });
+
+        async function loadImages() {
+            try {
+                const response = await fetch('/images');
+                if (!response.ok) throw new Error('Failed to load images');
+
+                const data = await response.json();
+                allImages = data.images;
+                renderImages();
+            } catch (error) {
+                console.error('Error loading images:', error);
+            }
+        }
+
+        function renderImages() {
+            imageCount.textContent = `${allImages.length} image${allImages.length !== 1 ? 's' : ''}`;
+
+            // Clear existing items (except select-all controls)
+            const selectAllControls = imageItems.querySelector('.select-all-controls');
+            imageItems.innerHTML = '';
+            imageItems.appendChild(selectAllControls);
+
+            if (allImages.length === 0) {
+                noImages.style.display = 'block';
+                imageItems.appendChild(noImages);
+                selectAllControls.style.display = 'none';
+                return;
+            }
+
+            selectAllControls.style.display = 'flex';
+            noImages.style.display = 'none';
+
+            allImages.forEach((image) => {
+                const item = document.createElement('div');
+                item.className = 'image-item';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'image-checkbox';
+                checkbox.dataset.filename = image.filename;
+                checkbox.addEventListener('change', updateDeleteButton);
+
+                const thumbnail = document.createElement('img');
+                thumbnail.className = 'image-thumbnail';
+                thumbnail.src = image.url;
+                thumbnail.alt = image.filename;
+
+                const info = document.createElement('div');
+                info.className = 'image-info';
+
+                const name = document.createElement('div');
+                name.className = 'image-name';
+                name.textContent = image.filename;
+                name.title = image.filename; // Show full filename on hover
+
+                const meta = document.createElement('div');
+                meta.className = 'image-meta';
+                const uploadDate = new Date(image.uploadedAt);
+                const formattedDate = uploadDate.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                const sizeKB = (image.size / 1024).toFixed(1);
+                meta.textContent = `${formattedDate} • ${sizeKB} KB`;
+
+                info.appendChild(name);
+                info.appendChild(meta);
+                item.appendChild(checkbox);
+                item.appendChild(thumbnail);
+                item.appendChild(info);
+                imageItems.appendChild(item);
+            });
+        }
+
+        function updateDeleteButton() {
+            const checkboxes = imageItems.querySelectorAll('.image-checkbox:not(#selectAll)');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+
+            deleteBtn.disabled = checkedCount === 0;
+            deleteBtn.textContent = checkedCount > 0 ? `Delete ${checkedCount} Selected` : 'Delete Selected';
+
+            // Update select all checkbox
+            const allChecked = checkedCount === checkboxes.length && checkboxes.length > 0;
+            selectAll.checked = allChecked;
+        }
+
+        selectAll.addEventListener('change', (e) => {
+            const checkboxes = imageItems.querySelectorAll('.image-checkbox:not(#selectAll)');
+            checkboxes.forEach(cb => cb.checked = e.target.checked);
+            updateDeleteButton();
+        });
+
+        deleteBtn.addEventListener('click', async () => {
+            const checkboxes = imageItems.querySelectorAll('.image-checkbox:not(#selectAll):checked');
+            const filenames = Array.from(checkboxes).map(cb => cb.dataset.filename);
+
+            if (filenames.length === 0) return;
+
+            if (!confirm(`Are you sure you want to delete ${filenames.length} image${filenames.length !== 1 ? 's' : ''}?`)) {
+                return;
+            }
+
+            deleteBtn.disabled = true;
+            deleteBtn.textContent = 'Deleting...';
+
+            try {
+                const response = await fetch('/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filenames })
+                });
+
+                if (response.ok) {
+                    showMessage('success', `Successfully deleted ${filenames.length} image${filenames.length !== 1 ? 's' : ''}`);
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 3000);
+                    loadImages();
+                } else {
+                    showMessage('error', 'Delete failed. Please try again.');
+                }
+            } catch (error) {
+                showMessage('error', 'Delete failed. Please try again.');
+            } finally {
+                deleteBtn.disabled = false;
+                deleteBtn.textContent = 'Delete Selected';
+                selectAll.checked = false;
+            }
+        });
+
+        // Load images on page load
+        loadImages();
+
+        // Reload images after successful upload
+        const originalUploadHandler = uploadBtn.onclick;
+        uploadBtn.onclick = async function(e) {
+            await originalUploadHandler.call(this, e);
+            // Give it a moment for the upload to complete
+            setTimeout(loadImages, 1000);
+        };
     </script>
 </body>
 </html>
