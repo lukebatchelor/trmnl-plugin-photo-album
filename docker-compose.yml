@@ -1,0 +1,15 @@
+services:
+  app:
+    image: trmnl-plugin-photo-album:latest
+    # replace image with build to build the image from the Dockerfile
+    # build: .
+    init: true
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    volumes:
+      - ./album:/app/album
+    environment:
+      - NODE_ENV=production
+      - PORT=${PORT:-3000}
+      - BASE_URL=${BASE_URL:-http://localhost:3000}
+    restart: unless-stopped
