@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Album Upload</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Photo Album</h1>
+        <p class="subtitle">Upload images to your album</p>
+
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📸</div>
+            <div class="upload-text">Click to upload or drag and drop</div>
+            <div class="upload-hint">Supports JPG, PNG, GIF, WebP</div>
+        </div>
+
+        <input type="file" id="fileInput" accept="image/*">
+
+        <div class="preview" id="preview">
+            <img id="previewImage" class="preview-image" src="" alt="Preview">
+
+            <div class="filename-group">
+                <label class="filename-label">Filename</label>
+                <div class="filename-input-wrapper" id="filenameWrapper">
+                    <input type="text" id="filenameInput" placeholder="imagename">
+                    <span class="filename-extension" id="filenameExtension">.jpg</span>
+                </div>
+                <div class="filename-error" id="filenameError">Only letters, numbers, dashes, and underscores allowed</div>
+            </div>
+
+            <div class="controls">
+                <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                <button class="btn btn-upload" id="uploadBtn">Upload Image</button>
+            </div>
+        </div>
+
+        <div class="message" id="message"></div>
+
+        <div class="divider"></div>
+
+        <div class="image-list">
+            <div class="image-list-header" id="imageListToggle">
+                <div class="image-list-header-left">
+                    <span class="expand-icon" id="expandIcon">▶</span>
+                    <h2 class="image-list-title">Manage Images</h2>
+                </div>
+                <span class="image-count" id="imageCount">0 images</span>
+            </div>
+
+            <div class="image-list-content" id="imageListContent">
+                <div class="image-items" id="imageItems">
+                    <div class="select-all-controls">
+                        <input type="checkbox" id="selectAll" class="image-checkbox">
+                        <label for="selectAll" class="select-all-label">Select All</label>
+                    </div>
+                    <div class="no-images" id="noImages">No images uploaded yet</div>
+                </div>
+
+                <div class="delete-controls">
+                    <button class="btn btn-danger" id="deleteBtn" disabled>Delete Selected</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

@@ -3,6 +3,7 @@ import { existsSync } from "fs";
 import { join, resolve } from "path";
 
 const ALBUM_DIR = resolve("./album");
+const DIST_DIR = resolve("./frontend/dist");
 const PORT = process.env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 
@@ -16,13 +17,6 @@ const server = Bun.serve({
   async fetch(req) {
     const url = new URL(req.url);
     const path = url.pathname;
-
-    // Serve upload page
-    if (path === "/" && req.method === "GET") {
-      return new Response(await Bun.file("./static/index.html").text(), {
-        headers: { "Content-Type": "text/html" },
-      });
-    }
 
     // Upload image endpoint
     if (path === "/upload" && req.method === "POST") {
@@ -158,6 +152,21 @@ const server = Bun.serve({
       } catch (error) {
         return new Response("Delete failed", { status: 500 });
       }
+    }
+
+    // Serve static files from frontend/dist
+    // Try to serve files (handles /, /assets/*, etc.)
+    const filepath = path === "/" ? join(DIST_DIR, "index.html") : join(DIST_DIR, path);
+
+    // Security: Ensure the resolved path is within DIST_DIR (prevent path traversal)
+    const normalizedPath = resolve(filepath);
+    if (!normalizedPath.startsWith(DIST_DIR)) {
+      return new Response("Forbidden", { status: 403 });
+    }
+
+    if (existsSync(normalizedPath)) {
+      const file = Bun.file(normalizedPath);
+      return new Response(file);
     }
 
     return new Response("Not found", { status: 404 });

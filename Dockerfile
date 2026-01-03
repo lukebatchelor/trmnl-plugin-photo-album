@@ -8,16 +8,30 @@ RUN apt-get update && apt-get install -y \
     python3 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy package files
+# Copy root package files
 COPY package.json bun.lock ./
 
 # Install dependencies
 RUN bun install --frozen-lockfile
 
-# Copy source files
+# Copy frontend package files
+COPY frontend/package.json frontend/bun.lock ./frontend/
+
+# Install frontend dependencies
+WORKDIR /app/frontend
+RUN bun install --frozen-lockfile
+
+# Copy all source files
+WORKDIR /app
 COPY . .
 
+# Build the frontend
+WORKDIR /app/frontend
+ENV NODE_ENV=production
+RUN bun run build
+
 # Build the server
+WORKDIR /app
 ENV NODE_ENV=production
 RUN bun build --target=bun index.ts --outfile=server.js
 
@@ -35,11 +49,11 @@ RUN apt-get update && apt-get install -y \
 COPY --from=builder /app/package.json /app/package.json
 
 # Create necessary directories for image storage
-RUN mkdir -p /app/static /app/album
+RUN mkdir -p /app/album /app/frontend/dist
 
-# Copy built server and static assets
+# Copy built server and frontend assets
 COPY --from=builder /app/server.js /app/server.js
-COPY --from=builder /app/static /app/static
+COPY --from=builder /app/frontend/dist /app/frontend/dist
 
 # Set environment variables
 ENV NODE_ENV=production
